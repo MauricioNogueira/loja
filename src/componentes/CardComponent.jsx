@@ -19,21 +19,6 @@ const useStyles = makeStyles({
 export default function CardComponent(props) {
   const classes = useStyles();
   const produto = props.item;
-  const rotaDeletar = props.rotaDeletar +'/'+ produto.id;
-
-  function deletar() {
-    axios.delete(rotaDeletar)
-    .then(result => {
-      console.log(result);
-    })
-    .catch(error => {
-      console.log(error);
-    })
-  }
-
-  function editar() {
-    props.history.push(`/editar/`+produto.id);
-  }
 
   return (
     <Card className={classes.card}>
@@ -55,10 +40,10 @@ export default function CardComponent(props) {
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button variant="contained" color="secondary" onClick={deletar}>
+        <Button variant="contained" color="secondary" onClick={() => props.deletar(produto.id)}>
           Deletar
         </Button>
-        <Button onClick={editar} variant="contained" color="primary">
+        <Button onClick={() => props.editar(produto.id)} variant="contained" color="primary">
           Atualizar
         </Button>
       </CardActions>
