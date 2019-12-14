@@ -3,11 +3,12 @@ import GridComponent from '../../componentes/GridComponent';
 const axios = require('axios');
 
 class Listar extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             produtos: []
         }
+        this.history = props.history;
     }
 
     componentDidMount() {
@@ -25,18 +26,7 @@ class Listar extends Component {
         return (
             <div>
                 <h1>Listagem de produtos</h1>
-                <GridComponent itens={this.state.produtos} />
-                {/* <Grid container spacing={4}>
-                    {
-                        this.state.produtos.map(produto => {
-                            return (
-                                <Grid container item xs={12} spacing={3}>
-                                    <CardComponent titulo={produto.nome} />
-                                </Grid>
-                            )
-                        })
-                    }
-                </Grid> */}
+                <GridComponent itens={this.state.produtos} history={this.history} />
             </div>
         );
     }

@@ -15,6 +15,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
 import Cadastrar from './view/produtos/Cadastrar';
 import Listar from './view/produtos/Listar';
+import Editar from './view/produtos/Editar';
 
 const drawerWidth = 240;
 
@@ -131,7 +132,8 @@ function App(props) {
           <div className={classes.toolbar} />
               <Switch>
                 <Route path="/cadastrar" component={Cadastrar}></Route>
-                <Route path="/produtos" component={Listar}></Route>
+                <Route path="/produtos" render={props => <Listar {...props} />}></Route>
+                <Route path="/editar/:id" component={Editar}></Route>
               </Switch>
         </main>
       </Router>

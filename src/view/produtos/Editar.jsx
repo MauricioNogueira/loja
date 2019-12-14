@@ -5,11 +5,12 @@ import Button from '@material-ui/core/Button';
 
 const axios = require('axios');
 
-class Cadastrar extends Component {
-    constructor() {
-        super();
+class Editar extends Component {
+    constructor(props) {
+        super(props);
         this.state = {
             produto:{
+                id: '',
                 nome: '',
                 preco: '',
                 imagem: ''
@@ -17,22 +18,43 @@ class Cadastrar extends Component {
         }
     }
 
-    teste(e,field){
+    componentDidMount() {
+        let id = this.props.match.params.id;
+        
+        axios.get('http://localhost:8080/api/produto/'+id)
+        .then(result => {
+            this.setState({produto: result.data[0]});
+            // this.setState({produto: {
+            //     nome: result.data[0].nome
+            // }});
+
+            // this.setState({produto: {
+            //     preco: result.data[0].preco
+            // }});
+
+            // this.setState({produto: {
+            //     imagem: result.data[0].imagem
+            // }});
+        })
+        .catch(error => {
+            console.log(error);
+        });
+    }
+
+    watch(e,field){
         let produto = this.state.produto;
         produto[field] = e.target.value;
         this.setState({...this.state, produto});
-        console.log(this.state);
     }
 
-    cadastrar() {
-        let form = document.getElementById('form-cadastrar');
+    atualizar() {
+        let form = document.getElementById('form-atualizar');
         let dataForm = new FormData(form);
         let object = {};
         dataForm.forEach((value, key) => {object[key] = value});
 
-        axios.post('http://localhost:8080/api/cadastrar', object)
+        axios.put('http://localhost:8080/api/atualizar/'+this.state.produto.id, object)
         .then(result => {
-            form.reset();
             alert(result.data.message);
         })
         .catch(error => {
@@ -46,13 +68,13 @@ class Cadastrar extends Component {
     render() {
         return (
             <div>
-                <h1>Cadastrar Produto</h1>
+                <h1>Editar Produto</h1>
                 <div>
-                    <form id="form-cadastrar">
+                    <form id="form-atualizar">
                         <Grid container spacing={4}>
                             <Grid container item xs={8} spacing={1}>
                                 <TextField
-                                    onChange={e => this.teste(e,"nome")}
+                                    onChange={e => this.watch(e,"nome")}
                                     id="nome"
                                     label="Nome do Produto"
                                     style={{ margin: 8 }}
@@ -62,6 +84,7 @@ class Cadastrar extends Component {
                                     InputLabelProps={{
                                         shrink: true,
                                     }}
+                                    value={this.state.produto.nome}
                                     variant="outlined"
                                     name="nome"
                                 />
@@ -69,7 +92,7 @@ class Cadastrar extends Component {
                             <Grid container item xs={4} spacing={1}>
                                 <TextField
                                     id="preco"
-                                    onChange={e => this.teste(e,"preco")}
+                                    onChange={e => this.watch(e, "preco")}
                                     label="Preço"
                                     style={{ margin: 8 }}
                                     placeholder=""
@@ -79,6 +102,7 @@ class Cadastrar extends Component {
                                         shrink: true,
                                     }}
                                     variant="outlined"
+                                    value={this.state.produto.preco}
                                     name="preco"
                                     type="number"
                                 />
@@ -87,6 +111,7 @@ class Cadastrar extends Component {
                                 <TextField
                                     id="imagem"
                                     label="Link da imagem"
+                                    onChange={e => this.watch(e, "imagem")}
                                     style={{ margin: 8 }}
                                     placeholder=""
                                     fullWidth
@@ -95,12 +120,13 @@ class Cadastrar extends Component {
                                         shrink: true,
                                     }}
                                     variant="outlined"
+                                    value={this.state.produto.imagem}
                                     name="imagem"
                                 />
                             </Grid>
                         </Grid>
-                        <Button onClick={this.cadastrar} variant="contained" color="primary">
-                            Cadastrar
+                        <Button onClick={this.atualizar.bind(this)} variant="contained" color="primary">
+                            Atualizar
                         </Button>
                     </form>
                 </div>
@@ -109,4 +135,4 @@ class Cadastrar extends Component {
     }
 }
 
-export default Cadastrar;
+export default Editar;

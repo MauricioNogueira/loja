@@ -7,11 +7,12 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+
 const axios = require('axios');
 
 const useStyles = makeStyles({
   card: {
-    maxWidth: 345,
+    maxWidth: 200,
   },
 });
 
@@ -30,6 +31,10 @@ export default function CardComponent(props) {
     })
   }
 
+  function editar() {
+    props.history.push(`/editar/`+produto.id);
+  }
+
   return (
     <Card className={classes.card}>
       <CardActionArea>
@@ -37,7 +42,7 @@ export default function CardComponent(props) {
           component="img"
           alt="Contemplative Reptile"
           height="140"
-          image="/static/images/cards/contemplative-reptile.jpg"
+          image={produto.imagem}
           title="Contemplative Reptile"
         />
         <CardContent>
@@ -45,17 +50,16 @@ export default function CardComponent(props) {
               {props.titulo}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-            Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-            across all continents except Antarctica
+            R$ {produto.preco}
           </Typography>
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button onClick={deletar}>
+        <Button variant="contained" color="secondary" onClick={deletar}>
           Deletar
         </Button>
-        <Button size="small" color="primary">
-          Learn More
+        <Button onClick={editar} variant="contained" color="primary">
+          Atualizar
         </Button>
       </CardActions>
     </Card>
