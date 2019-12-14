@@ -32,7 +32,7 @@ export default function CardComponent(props) {
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-              {props.titulo}
+              {produto.nome}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
             R$ {produto.preco}
